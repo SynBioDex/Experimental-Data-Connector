@@ -1,15 +1,17 @@
 import excel2flapjack.main as e2f
+# from excel2flapjack.main import X2F
 import excel2sbol.converter as conv
 import sbol2
 import tempfile
 import requests
 import os
-      
 
+      
+#TODO change inputs to match new e2f requirements
 def experimental_data_uploader(file_path_in, fj_user, fj_pass, sbh_user,
                                sbh_pass, sbh_collec, sbh_overwrite=False,
                                fj_overwrite=False):
-
+#Excel to SBOL
      # create temporary directory to write intermediate files to
      temp_dir = tempfile.TemporaryDirectory()
      file_path_out = os.path.join(temp_dir.name, 'test.xml')
@@ -56,10 +58,15 @@ def experimental_data_uploader(file_path_in, fj_user, fj_pass, sbh_user,
                sbol_name = str(tl.properties['http://sbols.org/v2#displayId'][0])
                sbol_hash_map[sbol_name] = sbol_uri
 
-
+     #Excel to Flapjack
+                                     
      # upload the excel file to flapjack and get hash map back
-     fj_url = "flapjack.rudge-lab.org:8000"
+     fj_url = "flapjack.rudge-lab.org:8000" # this should be user input
      # hash_map = e2f.flapjack_upload(fj_url, fj_user, fj_pass, file_path_in)
+     X2F.upload_all(parameters) 
+     hash_map = X2F.hash_map     
+
+     #the code above should replace this bit                                
      hash_map = e2f.flapjack_upload(fj_url, fj_user, fj_pass, file_path_in,
                                     sbol_hash_map=sbol_hash_map,
                                     add_sbol_uris=True,
