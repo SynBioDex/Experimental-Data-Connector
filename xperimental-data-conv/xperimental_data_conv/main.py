@@ -1,5 +1,5 @@
-import excel2flapjack.main as e2f
-# from excel2flapjack.main import X2F
+# import excel2flapjack.main as e2f
+from excel2flapjack.main import X2F
 import excel2sbol.converter as conv
 import sbol2
 import tempfile
@@ -63,17 +63,25 @@ def experimental_data_uploader(file_path_in, fj_user, fj_pass, sbh_user,
      # upload the excel file to flapjack and get hash map back
      fj_url = "flapjack.rudge-lab.org:8000" # this should be user input
      # hash_map = e2f.flapjack_upload(fj_url, fj_user, fj_pass, file_path_in)
-     X2F.upload_all(parameters) 
-     hash_map = X2F.hash_map     
+     # X2F.upload_all(parameters) 
+     # hash_map = X2F.hash_map     
+
+     print("made it to fj portion")
+
+     x2f_instance = X2F(file_path_in, fj_url, fj_user, fj_pass)
+     print(x2f_instance, "x2f_instance created")
+     x2f_instance.upload_all()
+     hash_map = x2f_instance.hash_map
 
      #the code above should replace this bit                                
-     hash_map = e2f.flapjack_upload(fj_url, fj_user, fj_pass, file_path_in,
+     ''' hash_map = e2f.flapjack_upload(fj_url, fj_user, fj_pass, file_path_in,
                                     sbol_hash_map=sbol_hash_map,
                                     add_sbol_uris=True,
                                     flapjack_override=fj_overwrite,
-                                    print_progress=True)
-     # print(hash_map)
+                                    print_progress=True)'''
+     print(hash_map)
 
+     
      # Add flapjack annotations to the SBOL
      doc = sbol2.Document()
      doc.read(file_path_out)
@@ -115,8 +123,9 @@ def experimental_data_uploader(file_path_in, fj_user, fj_pass, sbh_user,
           raise AttributeError(f'The collection ({sbh_collec}) could not be submitted to synbiohub as the collection already exists and overite is not on. Note it was submitted to flapjack')
      # if response.text == "Successfully uploaded":
      #      success = True
-
+     
      return(sbol_collec_url)
+
 
 
 
