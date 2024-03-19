@@ -8,7 +8,7 @@ import os
 
       
 #TODO get rid of hard coded urls
-def experimental_data_uploader(file_path_in, fj_url, fj_user, fj_pass, sbh_url, sbh_user,
+def xperimental_data_uploader(file_path_in, fj_url, fj_user, fj_pass, sbh_url, sbh_user,
                                sbh_pass, sbh_collec, sbh_overwrite=False):
 
 #Excel to SBOL
