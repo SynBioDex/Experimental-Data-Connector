@@ -1,7 +1,10 @@
-# Rosalie code
 from openpyxl import load_workbook
+from openpyxl import Workbook
+
 from itertools import product
+
 from tkinter import *
+from tkinter import Entry, Button, messagebox
 import tkinter as tk
 
 
@@ -13,14 +16,14 @@ input_metadata = {
                 }
 
 #gui work below
-
 root = tk.Tk()
 root.title("Welcome to LabGen")
 root.geometry("500x500")
 
 def show():
     label.config(text = media.get())
-    
+
+#List of options for each variable
 media_list = input_metadata['media']
 media_options = [
     media_list[0],
@@ -39,82 +42,127 @@ supp_options = [
     supp_list[1]
 ]
 
-label = Label(root, text = "Select Media from Menu")
-label.pack()
+#Next section is button management
+
 #media selection drop down menu
+label = Label(root, text = "Select Media(s) from Menu")
+label.grid(column =0, row =0, sticky=tk.N+tk.S+tk.W+tk.E)
+
 media = tk.StringVar(root)
+media2 = tk.StringVar(root)
 
 media.set("-Media-")
 
 media_option = tk.OptionMenu(root, media, *media_options)
-media_option.pack()
+media_option.grid(column =0, row =1, sticky=tk.N+tk.S+tk.W+tk.E)
 
-label = Label(root, text = "Select Strain from Menu")
-label.pack()
+media2.set("-Media 2-")
+
+media_option2 = tk.OptionMenu(root, media2, *media_options)
+media_option2.grid(column =1, row =1, sticky=tk.N+tk.S+tk.W+tk.E)
+
 #strain selection drop down menu
+label = Label(root, text = "Select Strain(s) from Menu")
+label.grid(column =0, row =3, sticky=tk.N+tk.S+tk.W+tk.E)
+
 strain = tk.StringVar(root)
+strain2 = tk.StringVar(root)
 
 strain.set("-Strain-")
 
 strain_option = tk.OptionMenu(root, strain, *strain_options)
-strain_option.pack()
+strain_option.grid(column =0, row =4, sticky=tk.N+tk.S+tk.W+tk.E)
 
-label = Label(root, text = "Select Supplement from Menu")
-label.pack()
+strain2.set("-Strain 2-")
+
+strain_option2 = tk.OptionMenu(root, strain2, *strain_options)
+strain_option2.grid(column =1, row =4, sticky=tk.N+tk.S+tk.W+tk.E)
+
 #supplement selection drop down menu
+label = Label(root, text = "Select Supplement(s) from Menu")
+label.grid(column =0, row =6, sticky=tk.N+tk.S+tk.W+tk.E)
+
 supp = tk.StringVar(root)
+supp2 = tk.StringVar(root)
 
 supp.set("-Supplement-")
 
 supp_option = tk.OptionMenu(root, supp, *supp_options)
-supp_option.pack()
+supp_option.grid(column =0, row =7, sticky=tk.N+tk.S+tk.W+tk.E)
+
+supp2.set("-Supplement 2-")
+
+supp_option2 = tk.OptionMenu(root, supp2, *supp_options)
+supp_option2.grid(column =1, row =7, sticky=tk.N+tk.S+tk.W+tk.E)
 
 #replicates enter menu
 label = Label(root, text = "Enter in Number of Replicates")
-label.pack()
+label.grid(column =0, row =11, sticky=tk.N+tk.S+tk.W+tk.E)
+
+'''
+#This is a loop to chcek if the repli_enter value is an integer
+def check_value():
+        try:
+            value = int(repli_enter.get())
+            result_label.config(text=f"Valid integer: {value}", fg = "green")
+        except ValueError:
+            result_label.config(text="Not a valid integer", fg = "red")
+'''
+
+#Back to GUI work, the following is the replicates entry field and check value button
 repli_enter = Entry(root, width = 10)
-repli_enter.pack()
+repli_enter.grid(column =0, row =12, sticky=tk.N+tk.S+tk.W+tk.E)
 
-label = Label(root, text = " ")
-label.pack()
+'''
+button_print = Button(root, text = "Check value", command = check_value)
+button_print.grid(column =1, row =13)
+'''
 
-button = Button(root, text = "Generate", command = show).pack()
+result_label = Label(root, text = "", fg = "black")
+result_label.grid(column =1, row =12)
 
-label = Label(root, text = " ")
-label.pack()
-
-root.mainloop()
-
-#placeholder for dictionary in case it needs to be moved back
-
-
+#The generation of all possible combinations
 entry_list = []
 
 for entry in input_metadata:
     temp_list = input_metadata[entry]
     entry_list.append(temp_list)
 
-combinations = list(product(*entry_list))
+#The following function determines if the entered replicate value is a integer or not
+#If it is, then it continues to print all of the combinations possible
+#If it is not, then it prints "not a valid integer" and allows for another try
+def show():
+    try:
+            value = int(repli_enter.get())
+            result_label.config(text=f"Valid integer: {value}", fg = "green")
+            combinations = list(product(*entry_list))
+            print(combinations)
 
-print(combinations)
+    except ValueError:
+            result_label.config(text="Not a valid integer", fg = "red")
 
-'''
-import fileinput
+button = Button(root, text = "Generate", command = show).grid()
 
-filename = 'test.py'
+label = Label(root, text = " ")
+label.grid()
 
-for line in fileinput.input(files = filename):
-    print(line, end = '')
+root.mainloop()
 
-book = load_workbook('test sheet.xlsx')
+#Excel sheet opening work
+cell_count = "96"
+wb = Workbook()
 
-sheet = book.active
+wb["Sheet"].title = "Laboratory Generation Sheet"
 
-new_data = [entry_list[0], entry_list[1], entry_list[2]]
+ws1 = wb["Laboratory Generation Sheet"]
+ws1["A1"] = "Laboratory Generation for "
 
-for row in sheet['b5':'f5']:
-    for index, cell in enumerate(row):
-        cell.value = new_data[index]
+strain = ["lb", "m9"]
 
-book.save('new_test.xlsx')
-'''
+row_start = 3
+col_start = 2
+
+for i in range(len(strain)):
+    ws1.cell(row = row_start + i, column = col_start).value = strain[i]
+
+wb.save("excel_test_sheet1.xlsx")
