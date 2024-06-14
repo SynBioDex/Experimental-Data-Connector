@@ -20,6 +20,12 @@ combinations = list(product(*entry_list))
 
 print(combinations)
 
+for combination in combinations:
+    print(f'{combination[0]} in position 1')
+    print(f'{combination[1]} in position 2')
+    print(f'{combination[2]} in position 3')
+
+
 '''
 import fileinput
 
