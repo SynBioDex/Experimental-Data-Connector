@@ -141,12 +141,12 @@ for entry in input_metadata:
 combinations = list(product(*entry_list))
 value = int(repli_enter.get())
 
-print(value)
-'''
+#PROBLEM CHILD CODE BELOW
 for index, combination in enumerate(combinations):
     sheet[uppercase_alphabet[index]+'1'] = (f'{combination}')
     for cindex in range(1,value):
         sheet[uppercase_alphabet[index]+str(cindex+1)] = (f'{combination}')
+#PROBLEM CHILD CODE ENDS
 
 filename = "excel_test_sheet.xlsx"
 try:
@@ -156,4 +156,3 @@ except:
 
 wb.save(filename = filename)
 wb.save("excel_test_sheet1.xlsx")
-'''
