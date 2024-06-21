@@ -36,7 +36,8 @@ supp_options = input_metadata['supplement']
 
 #Next section is button management
 
-#media selection drop down menu
+
+#MEDIA SELECTION DROP DOWN
 label = Label(root, text = "Select Media(s) from Menu")
 label.grid(column =0, row =0, sticky=tk.N+tk.S+tk.W+tk.E)
 
@@ -48,6 +49,7 @@ media_option = tk.OptionMenu(root, media, *media_options) #ENTER a command to re
 media_option.grid(column =0, row =1, sticky=tk.N+tk.S+tk.W+tk.E)
 
 temp_list =[]
+
 #adding selections to a media list to reference later
 media_list = []
 
@@ -72,7 +74,9 @@ temp_list.append(media_list)
 media_button = Button(root, text = "add", command = media_dropdown)
 media_button.grid(column = 1, row =1, sticky=tk.N+tk.S+tk.W+tk.E )
 
-#strain selection drop down menu
+
+
+#STRAIN SELECTION DROP DOWN MENU
 label = Label(root, text = "Select Strain(s) from Menu")
 label.grid(column =0, row =3, sticky=tk.N+tk.S+tk.W+tk.E)
 
@@ -100,21 +104,24 @@ def strain_dropdown(*args):
     strain_list.append(strain_select)
     sresult_label.config(text=f"{strain_list}", fg = "blue")
     sresult_label.grid(column =2, row=4, sticky=tk.N+tk.S+tk.W+tk.E)
-
+    
 temp_list.append(strain_list)
 
 strain_button = Button(root, text = "add", command = strain_dropdown)
 strain_button.grid(column = 1, row =4, sticky=tk.N+tk.S+tk.W+tk.E )
 
-'''
+
+
+#Temp list button to check if the variables were added correctly
 def temp_list1():
     print(temp_list)
 
 temp_listbutton = Button(root, text = "temp list", command = temp_list1)
 temp_listbutton.grid(column=0, row=15, sticky=tk.N+tk.S+tk.W+tk.E )
-'''
+#End
 
-#supplement selection drop down menu
+
+#SUPPLEMENT SELECTION DROP DOWN MENU
 label = Label(root, text = "Select Supplement(s) from Menu")
 label.grid(column =0, row =6, sticky=tk.N+tk.S+tk.W+tk.E)
 
@@ -125,6 +132,7 @@ supp.set("-Supplement-")
 supp_option = tk.OptionMenu(root, supp, *supp_options)
 supp_option.grid(column =0, row =7, sticky=tk.N+tk.S+tk.W+tk.E)
 
+#Dropdown selection loop to add the selected values to the overall temp list
 supp_list = []
 
 def supp_dropdown(*args):
@@ -147,6 +155,8 @@ temp_list.append(supp_list)
 supp_button = Button(root, text = "add", command = supp_dropdown)
 supp_button.grid(column = 1, row =7, sticky=tk.N+tk.S+tk.W+tk.E )
 
+ 
+
 #replicates enter menu
 label = Label(root, text = "Enter in Number of Replicates")
 label.grid(column =0, row =11, sticky=tk.N+tk.S+tk.W+tk.E)
@@ -164,9 +174,53 @@ sresult_label.grid(column =1, row = 13)
 suresult_label = Label(root, text = "", fg = "black")
 suresult_label.grid(column =1, row = 14)
 
+'''
+#ENTRY LIST CODE
+entry_list = []
+
+for entry in temp_list:
+    temp_list2 = temp_list[entry]
+    entry_list.append(temp_list2)
+
+
+def show():
+    try:
+            value = int(repli_enter.get())
+            combinations = list(product(*entry_list))
+            print(combinations)
+
+    except ValueError:
+            result_label.config(text="Not a valid integer", fg = "red")
+'''
+
 button = Button(root, text = "Generate", command = show).grid()
 
 label = Label(root, text = " ")
 label.grid()
 
 root.mainloop()
+
+#EXCEL WORK BELOW
+wb = Workbook()
+sheet = wb.active
+
+combinations = list(product(*entry_list))
+
+num_copies = int(repli_enter.get())
+
+
+#EXCEL LISTING CODE BELOW
+for index, combination in enumerate(combinations):
+    sheet[uppercase_alphabet[index]+'1'] = (f'{combination}')
+    for i in range(3):
+        # CHANGE THE RANGE(3) TO RANGE(REPLI_ENTER) WHEN POSSIBLE
+        sheet[uppercase_alphabet[index] + str(i + 2)] = (f'{combination}')
+
+#REMOVING AND THEN SAVING THE EXCEL TEST SHEET
+filename = "excel_test_sheet.xlsx"
+try:
+    os.remove('./'+ filename)
+except:
+    pass
+
+wb.save(filename = filename)
