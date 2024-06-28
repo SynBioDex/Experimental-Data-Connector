@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LabGen UI</title>
+     <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form > div {
+            background-color: rgb(0, 84, 118);
+            padding: 10px;
+            margin: 5px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 5px rgb(3, 9, 127);
+            color: wheat;
+            width: 70%;
+            text-align: center;
+        }
+
+        body {
+            background-color: rgb(4, 4, 41);
+            color: wheat;
+        }
+
+     </style>
+</head>
+<body>
+    <h1>Welcome to LabGen</h1>
+    <button onclick="addMedia()"  >Add Media</button>
+
+    <form action="/submit" method="post">
+        <div>
+            <label for="media">Select a media:</label>
+            <select name="media" id="media">
+                <option value="lb">lb</option>
+                <option value="m9">m9</option>
+            </select>
+        </div>
+        <div>
+            <label for="strain">Select a strain:</label>
+            <select name="strain" id="strain">
+                <option value="top10">top10</option>
+                <option value="dh5a">dh5a</option>
+            </select>
+        </div>
+        <div>
+            <label for="supplement">Select a supplement:</label>
+            <select name="supplement" id="supplement">
+                <option value="atc">atc</option>
+                <option value="iptg">iptg</option>
+            </select>
+        </div>
+        <div>
+            <label for="vector">Select a vector:</label>
+            <select name="vector" id="vector">
+                <option value="repressilator">repressilator</option>
+                <option value="toggleswitch">toggleswitch</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    <script>
+        function addMedia(){
+            var media = document.getElementById("media");
+            var parrent = media.parentNode;
+            var mediaDupe = media.cloneNode(true);
+            parrent.appendChild(mediaDupe);
+        }
+    </script>
+</body>
+</html>
