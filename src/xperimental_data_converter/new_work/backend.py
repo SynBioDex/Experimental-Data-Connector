@@ -19,6 +19,8 @@ def favicon():
 def submit():
     data = request.form
     print(data)
+    # print the list of selected media
+    print(data.getlist('media'))
     return render_template('response.html',
                            message="success")
     
