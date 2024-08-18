@@ -1,3 +1,4 @@
+import argparse
 from flask import Flask, request, render_template, send_file
 import webbrowser
 from gensheet import excel_sheet
@@ -20,16 +21,7 @@ def favicon():
 # This takes an html form post and prints it to the console returning success to the browser
 @app.route('/submit', methods=['POST'])
 def submit():
-    # print(request.form.getlist('media'))
-    # print(request.form["replicates"])
-    
-    # <OptionsSection title="Select Media" name="media" options={["lb", "m9"]} selectFirst={true} />
-    # <OptionsSection title="Select a strain" name="strain" options={["top10", "dh5a"]} />
-    # <OptionsSection title="Select a supplement" name="supplement" options={["atc", "iptg"]} />
-    # <OptionsSection title="Select a vector" name="vector" options={["repressilator", "toggleswitch"]} />
-
-    # <OptionSlider title="Number of replicates" name="replicates" min="1" max="10" initialVal="1" />
-
+    # get the lists from the form
     lists = [
         request.form.getlist('media'),
         request.form.getlist('strain'),
@@ -37,14 +29,31 @@ def submit():
         request.form.getlist('vector')
     ]
     
+    #check that all lists have at least one item
+    for l in lists:
+        if len(l) == 0:
+            return render_template('response.html',
+                                   message="Error, at least one item must be selected from each list, please go back.",
+                                   color="red"
+                                   )
+    
+    # get the number of replicates from the form
     replicates = int(request.form["replicates"])
     
+    # generate the excel sheet
     excel_sheet(lists, replicates)
     
+    # return success to the browser
     return render_template('response.html',
-                           message="success")
+                           message="Success",
+                           color="green"
+                           )
     
 port = 4269
 # webbrowser.open('http://localhost:'+str(port))
 if __name__ == '__main__':
-    app.run(debug=False, port=port, host='0.0.0.0')
+    parser = argparse.ArgumentParser(description='Run Flask app with optional debug mode.')
+    parser.add_argument('--debug', action='store_true', help='Run the Flask app in debug mode')
+    args = parser.parse_args()
+
+    app.run(debug=args.debug, port=port, host='0.0.0.0')
