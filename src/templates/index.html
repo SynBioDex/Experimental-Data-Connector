@@ -92,12 +92,29 @@
         }
 
         function Form() {
+            // Start with empty options list
+            const [options, setOptions] = React.useState({
+                "media": [""],
+                "strain": [""],
+                "supplement": [""],
+                "vector": [""]
+            });
+
+            
+            // Fetch the options JSON data when the component mounts
+            React.useEffect(() => {
+                fetch('/options.json')
+                  .then(response => response.json())
+                  .then(data => {console.log(data);setOptions(data)})
+                  .catch(error => console.error('Error fetching the JSON data:', error));
+              }, []);
+
             return (
                 <form action="/submit" method="post">
-                    <OptionsSection title="Select Media" name="media" options={["lb", "m9"]} selectFirst={true} />
-                    <OptionsSection title="Select a strain" name="strain" options={["top10", "dh5a"]} />
-                    <OptionsSection title="Select a supplement" name="supplement" options={["atc", "iptg"]} />
-                    <OptionsSection title="Select a vector" name="vector" options={["repressilator", "toggleswitch"]} />
+                    <OptionsSection title="Select Media" name="media" options={options.media} selectFirst={true} />
+                    <OptionsSection title="Select a strain" name="strain" options={options.strain} />
+                    <OptionsSection title="Select a supplement" name="supplement" options={options.supplement} />
+                    <OptionsSection title="Select a vector" name="vector" options={options.vector} />
 
                     <OptionSlider title="Number of replicates" name="replicates" min="1" max="10" initialVal="1" />
 

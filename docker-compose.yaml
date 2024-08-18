@@ -1,0 +1,9 @@
+services:
+  main:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./output:/app/output
+    ports:
+      - "4269:4269"

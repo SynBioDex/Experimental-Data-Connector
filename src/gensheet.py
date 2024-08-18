@@ -102,7 +102,7 @@ def excel_sheet(lists, replicates):
             sheet2.column_dimensions[column].width = adjusted_width
 
         timestamp = datetime.now().strftime("%Y-%m-%d %H%M")
-        filename = f"SampleDesign_{timestamp}.xlsx"
+        filename = f"output/SampleDesign_{timestamp}.xlsx"
 
         wb.save(filename)
 

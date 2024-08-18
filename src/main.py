@@ -5,11 +5,13 @@ from gensheet import excel_sheet
 app = Flask(__name__)
 
 @app.route("/") 
-def hello(): 
-    message = "Hello, World"
-    # return render_template('index.html',  
-    #                        message=message) 
+@app.route('/index.html')
+def index():
     return send_file('templates/index.html', mimetype='text/html')
+
+@app.route('/options.json')
+def options():
+    return send_file('options.json', mimetype='application/json')
 
 @app.route('/favicon.ico')
 def favicon():
@@ -45,4 +47,4 @@ def submit():
 port = 4269
 # webbrowser.open('http://localhost:'+str(port))
 if __name__ == '__main__':
-    app.run(debug=True, port=port)
+    app.run(debug=False, port=port, host='0.0.0.0')
