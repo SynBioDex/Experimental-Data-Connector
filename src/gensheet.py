@@ -101,7 +101,7 @@ def excel_sheet(lists, replicates):
             adjusted_width = max_length + 2
             sheet2.column_dimensions[column].width = adjusted_width
 
-        timestamp = datetime.now().strftime("%Y-%m-%d %H%M")
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         filename = f"output/SampleDesign_{timestamp}.xlsx"
 
         wb.save(filename)
