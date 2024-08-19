@@ -1,2 +1,0 @@
-﻿excel2flapjack~=1.0.2
-excel2sbol~=1.0.24
