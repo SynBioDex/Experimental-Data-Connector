@@ -41,7 +41,14 @@ def submit():
     replicates = int(request.form["replicates"])
     
     # generate the excel sheet
-    excel_sheet(lists, replicates)
+    try:
+        excel_sheet(lists, replicates)
+        # Below is error handling code
+    except Exception as e:
+        return render_template('response.html',
+                                    message=f"An error occurred during generation: {str(e)}\n\nPlease select a lower number of replicates and try again.",
+                                    color="red"
+                                    )
     
     # return success to the browser
     return render_template('response.html',
