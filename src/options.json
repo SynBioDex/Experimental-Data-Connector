@@ -1,6 +1,0 @@
-{
-    "media": ["lb", "m9"],
-    "strain": ["top10", "dh5a"],
-    "supplement": ["atc", "iptg"],
-    "vector": ["repressilator", "toggleswitch"]
-}

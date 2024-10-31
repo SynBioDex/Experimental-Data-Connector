@@ -130,6 +130,3 @@ dmypy.json
 
 #vscode
 .vscode/
-
-#Excel files
-*.xlsx
